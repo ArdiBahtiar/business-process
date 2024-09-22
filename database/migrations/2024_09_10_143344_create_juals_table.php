@@ -17,9 +17,9 @@ return new class extends Migration
             $table->char('Kode_Customer', length: 4);
             $table->char('KODE_TJEN', length: 1);
             $table->date('TGL_FAKTUR');
-            $table->int('TOTAL_BRUTO', length: 15);
-            $table->int('TOTAL_DISKON', length: 15);
-            $table->int('TOTAL_JUMLAH', length: 15);
+            $table->integer('TOTAL_BRUTO');
+            $table->integer('TOTAL_DISKON');
+            $table->integer('TOTAL_JUMLAH');
         });
     }
 

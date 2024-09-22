@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    public function dashboard()
+    {
+        return view('pages.dashboard');
+    }
+
     /**
      * Display a listing of the resource.
      */

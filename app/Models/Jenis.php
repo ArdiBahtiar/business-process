@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Jenis extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'KODE_TJEN',
+        'NAMA_TJEN'
+    ];
 }
