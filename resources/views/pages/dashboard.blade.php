@@ -17,53 +17,55 @@
             <div class="container py-3 my-2 rounded" style="background-color: rgb(189, 189, 189)">
                 <div class="row g-1">
                     <div class="col">
-                        <div class="btn btn-light" style="width: 75px">Input</div>
+                        <button class="btn btn-light" style="width: 75px">Input</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 75px">Hapus</div>
+                        <button class="btn btn-light" style="width: 75px">Hapus</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 75px">Edit</div>
+                        <button class="btn btn-light" style="width: 75px">Edit</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 75px">Simpan</div>
+                        <button class="btn btn-light" style="width: 75px" disabled>Simpan</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 75px">Cari</div>
+                        <button class="btn btn-light" style="width: 75px">Cari</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 75px">Batal</div>
+                        <button class="btn btn-light" style="width: 75px" disabled>Batal</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 75px">Print</div>
+                        <button class="btn btn-light" style="width: 75px">Print</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 75px">Preview</div>
+                        <button class="btn btn-light" style="width: 75px">Preview</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 75px">CSV</div>
+                        <button class="btn btn-light" style="width: 75px">CSV</button>
                     </div>
                     <div class="col-5">
                         <div class="text-white"></div>
                     </div>
                 </div>
 
-                <div class="row my-3 py-3 border-top border-secondary">
-                    <div class="col-2">
+                <form action="" method="">
+                    <div class="row my-3 py-3 border-top border-secondary">
+                        <div class="col-2">
                         <div class="px-3">NO FAKTUR</div>
+                        </div>
+                        :
+                        <div class="col-4">
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-2">
+                            <div class="px-3">TANGGAL</div>
+                        </div>
+                        :
+                        <div class="col-3">
+                            <input type="date" class="form-control" disabled>
+                        </div>
                     </div>
-                    :
-                    <div class="col-4">
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="col-2">
-                        <div class="px-3">TANGGAL</div>
-                    </div>
-                    :
-                    <div class="col-3">
-                        <input type="date" class="form-control">
-                    </div>
-                </div>
+                </form>
 
                 <div class="row">
                     <div class="col-2">
@@ -71,7 +73,7 @@
                     </div>
                     :
                     <div class="col-4">
-                        <select class="form-control">
+                        <select class="form-control" disabled>
                         <option selected>Coba-coba</option>    
                         <option value="coba">Coba</option>    
                         </select>
@@ -81,7 +83,7 @@
                     </div>
                     :
                     <div class="col-3">
-                        <select class="form-control">
+                        <select class="form-control" disabled>
                             <option value="TERIMA">TERIMA</option>
                             <option value="JUAL">JUAL</option>
                             <option value="RETUR">RETUR</option>
@@ -102,19 +104,19 @@
             <div class="container py-3 my-3 rounded" style="background-color: rgb(189, 189, 189)">
                 <div class="row g-1">
                     <div class="col">
-                        <div class="btn btn-light" style="width: 77px">Input</div>
+                        <button class="btn btn-light" style="width: 77px" disabled>Input</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 77px">Hapus</div>
+                        <button class="btn btn-light" style="width: 77px" disabled>Hapus</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 77px">Simpan</div>
+                        <button class="btn btn-light" style="width: 77px" disabled>Simpan</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 77px">Batal</div>
+                        <button class="btn btn-light" style="width: 77px" disabled>Batal</button>
                     </div>
                     <div class="col">
-                        <div class="btn btn-light" style="width: 77px">Header</div>
+                        <button class="btn btn-light" style="width: 77px" disabled>Header</button>
                     </div>
                     <div class="col-8">
                         <div class="text-white"></div>
@@ -123,55 +125,53 @@
 
                 <div class="row my-3 pt-3 border-top border-secondary">
                     <div class="col-2">
-                        <div class="px-3">Kode Barang</div>
+                        <div class="px-1">Kode Barang</div>
+                    </div>
+                    <div class="col-2">
+                        <div class="px-1">Nama Barang</div>
                     </div>
                     <div class="col">
-                        <div class="">Nama Barang</div>
+                        <div class="px-1">Harga Barang</div>
+                    </div>
+                    <div class="col-1">
+                        <div class="px-1">QTY</div>
+                    </div>
+                    <div class="col-1">
+                        <div class="px-1">Diskon <span style="font-weight: bold">%</span></div>
                     </div>
                     <div class="col">
-                        <div class="">Harga Barang</div>
+                        <div class="px-1">Bruto</div>
                     </div>
                     <div class="col">
-                        <div class="">QTY</div>
-                    </div>
-                    <div class="col">
-                        <div class="">Diskon <span style="font-weight: bold">%</span></div>
-                    </div>
-                    <div class="col">
-                        <div class="">Bruto</div>
-                    </div>
-                    <div class="col">
-                        <div class="">Jumlah</div>
+                        <div class="px-1">Jumlah</div>
                     </div>
                 </div>
                 
+                <form action="" method="">
                 <div class="row">
-                    <div class="col">
-                         {{-- <input type="text" class="form-control" id="kode_barang" style="width: 185px"> --}}
-                         <input type="text" class="form-control" id="kode_barang">
+                        <div class="col-2">
+                            <input type="text" class="form-control" id="kode_barang">
+                        </div>
+                        <div class="col-2">
+                            <input type="text" class="form-control" id="nama_barang" disabled>
+                        </div>
+                        <div class="col">
+                            <input type="number" placeholder="Rp 0" class="form-control" style="text-align: right" id="harga_barang" disabled>
+                        </div>
+                        <div class="col-1">
+                            <input type="number" class="form-control" id="qty">
+                        </div>
+                        <div class="col-1">
+                            <input type="number" class="form-control" id="diskon">
+                        </div>
+                        <div class="col">
+                            <input type="number" placeholder="Rp 0" class="form-control" style="text-align: right" id="bruto" disabled>
+                        </div>
+                        <div class="col">
+                            <input type="number" placeholder="Rp 0" class="form-control" style="text-align: right" id="jumlah" disabled>
+                        </div>
                     </div>
-                    <div class="col">
-                        {{-- <input type="text" class="form-control" id="nama_barang" style="width: 160px"> --}}
-                        <input type="text" class="form-control" id="nama_barang">
-                    </div>
-                    <div class="col">
-                        <input type="number" placeholder="Rp 0" class="form-control" id="harga_barang">
-                    </div>
-                    <div class="col">
-                        {{-- <input type="number" class="form-control" id="qty" style="width: 80px"> --}}
-                        <input type="number" class="form-control" id="qty">
-                    </div>
-                    <div class="col">
-                        {{-- <input type="number" class="form-control" id="diskon" style="width: 80px"> --}}
-                        <input type="number" class="form-control" id="diskon">
-                    </div>
-                    <div class="col">
-                        <input type="number" placeholder="Rp 0" class="form-control" id="bruto">
-                    </div>
-                    <div class="col">
-                        <input type="number" placeholder="Rp 0" class="form-control" id="jumlah">
-                    </div>
-                </div>
+                </form>
             </div>
 
             <div class="container pt-3 pb-5 my-3 rounded" style="background-color: rgb(189, 189, 189)">
