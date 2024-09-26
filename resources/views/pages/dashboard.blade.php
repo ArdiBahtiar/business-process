@@ -17,7 +17,7 @@
             <div class="container py-3 my-2 rounded" style="background-color: rgb(189, 189, 189)">
                 <div class="row g-1">
                     <div class="col">
-                        <button class="btn btn-light" style="width: 75px">Input</button>
+                        <button class="btn btn-light" style="width: 75px" id="btnInput">Input</button>
                     </div>
                     <div class="col">
                         <button class="btn btn-light" style="width: 75px">Hapus</button>
@@ -26,13 +26,13 @@
                         <button class="btn btn-light" style="width: 75px">Edit</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 75px" disabled>Simpan</button>
+                        <button class="btn btn-light" style="width: 75px" id="btnSimpan" disabled>Simpan</button>
                     </div>
                     <div class="col">
                         <button class="btn btn-light" style="width: 75px">Cari</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 75px" disabled>Batal</button>
+                        <button class="btn btn-light" style="width: 75px" id="btnBatal" disabled>Batal</button>
                     </div>
                     <div class="col">
                         <button class="btn btn-light" style="width: 75px">Print</button>
@@ -55,6 +55,7 @@
                         </div>
                         :
                         <div class="col-4">
+                            {{-- <input type="text" class="form-control" style="border-color: blue"> --}}
                             <input type="text" class="form-control">
                         </div>
                         <div class="col-2">
@@ -62,7 +63,7 @@
                         </div>
                         :
                         <div class="col-3">
-                            <input type="date" class="form-control" disabled>
+                            <input type="date" class="form-control" id="inputTanggal" disabled>
                         </div>
                     </div>
                 </form>
@@ -73,7 +74,7 @@
                     </div>
                     :
                     <div class="col-4">
-                        <select class="form-control" disabled>
+                        <select class="form-control" id="inputCustomer" disabled>
                         <option selected>Coba-coba</option>    
                         <option value="coba">Coba</option>    
                         </select>
@@ -83,7 +84,7 @@
                     </div>
                     :
                     <div class="col-3">
-                        <select class="form-control" disabled>
+                        <select class="form-control" id="inputJenis" disabled>
                             <option value="TERIMA">TERIMA</option>
                             <option value="JUAL">JUAL</option>
                             <option value="RETUR">RETUR</option>
@@ -96,7 +97,7 @@
                 <div class="row">
                     <div class="col-11"></div>
                     <div class="col-1 align-self-end">
-                        <div class="btn btn-light">DETAIL</div>
+                        <button class="btn btn-light" id="detailButton" disabled>DETAIL</button>
                     </div>
                 </div>
             </div>
@@ -236,4 +237,24 @@
                 </div>
             </div>
     </div>
+
+<script>
+    document.getElementById('btnInput').addEventListener('click', function() {
+        document.getElementById('btnSimpan').disabled = false;
+        document.getElementById('btnBatal').disabled = false;
+        document.getElementById('inputTanggal').disabled = false;
+        document.getElementById('inputCustomer').disabled = false;
+        document.getElementById('inputJenis').disabled = false;
+        // document.getElementById('detailButton').disabled = false;
+    });
+
+    document.getElementById('btnBatal').addEventListener('click', function() {
+        document.getElementById('btnSimpan').disabled = true;
+        document.getElementById('btnBatal').disabled = true;
+        document.getElementById('inputTanggal').disabled = true;
+        document.getElementById('inputCustomer').disabled = true;
+        document.getElementById('inputJenis').disabled = true;
+        // document.getElementById('detailButton').disabled = true;
+    })
+</script>
 @endsection
