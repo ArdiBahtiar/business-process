@@ -13,4 +13,6 @@ class Jenis extends Model
         'KODE_TJEN',
         'NAMA_TJEN'
     ];
+
+    public $timestamps = false;
 }

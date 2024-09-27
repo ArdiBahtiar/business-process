@@ -13,4 +13,6 @@ class Customer extends Model
         'Kode_Customer',
         'Nama_Customer'
     ];
+
+    public $timestamps = false;
 }

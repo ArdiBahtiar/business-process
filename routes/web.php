@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [CustomerController::class, 'dashboard']);
+Route::get('/masterBarang', [CustomerController::class, 'masterBarang']);
+Route::get('/masterCustomer', [CustomerController::class, 'masterCustomer']);
 
 Auth::routes();
 

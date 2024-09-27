@@ -19,4 +19,6 @@ class Jual extends Model
         'TOTAL_DISKON',
         'TOTAL_JUMLAH'
     ];
+
+    public $timestamps = false;
 }

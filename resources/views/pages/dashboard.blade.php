@@ -4,10 +4,10 @@
     <div class="container">
         <div class="row g-2">
             <div class="col-1">
-                <div class="btn btn-primary">Master Barang</div>
+                <a href="{{ url('/masterBarang') }}" class="btn btn-primary">Master Barang</a>
             </div>
             <div class="col-1">
-                <div class="btn btn-primary">Master Customer</div>
+                <a href="{{ url('/masterCustomer') }}" class="btn btn-primary">Master Customer</a>
             </div>
             {{-- <div class="col-10">
                 <div class="text-white">-</div>
@@ -55,8 +55,7 @@
                         </div>
                         :
                         <div class="col-4">
-                            {{-- <input type="text" class="form-control" style="border-color: blue"> --}}
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="inputNomorFaktur" maxlength="6">
                         </div>
                         <div class="col-2">
                             <div class="px-3">TANGGAL</div>
@@ -75,8 +74,10 @@
                     :
                     <div class="col-4">
                         <select class="form-control" id="inputCustomer" disabled>
-                        <option selected>Coba-coba</option>    
-                        <option value="coba">Coba</option>    
+                            {{-- <option selected></option>     --}}
+                            @foreach ($customers as $customer)  
+                            <option value="{{$customer->Kode_Customer}}">{{ $customer->Nama_Customer }}</option>    
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-2">
@@ -85,9 +86,9 @@
                     :
                     <div class="col-3">
                         <select class="form-control" id="inputJenis" disabled>
-                            <option value="TERIMA">TERIMA</option>
-                            <option value="JUAL">JUAL</option>
-                            <option value="RETUR">RETUR</option>
+                            @foreach ($jenis as $pilihan)
+                                <option value="{{ $pilihan->KODE_TJEN }}">{{ $pilihan->NAMA_TJEN }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -105,19 +106,19 @@
             <div class="container py-3 my-3 rounded" style="background-color: rgb(189, 189, 189)">
                 <div class="row g-1">
                     <div class="col">
-                        <button class="btn btn-light" style="width: 77px" disabled>Input</button>
+                        <button class="btn btn-light" style="width: 77px" id="inputBawah" disabled>Input</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 77px" disabled>Hapus</button>
+                        <button class="btn btn-light" style="width: 77px" id="hapusBawah" disabled>Hapus</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 77px" disabled>Simpan</button>
+                        <button class="btn btn-light" style="width: 77px" id="simpanBawah" disabled>Simpan</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 77px" disabled>Batal</button>
+                        <button class="btn btn-light" style="width: 77px" id="batalBawah" disabled>Batal</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 77px" disabled>Header</button>
+                        <button class="btn btn-light" style="width: 77px" id="headerBawah" disabled>Header</button>
                     </div>
                     <div class="col-8">
                         <div class="text-white"></div>
@@ -151,7 +152,12 @@
                 <form action="" method="">
                 <div class="row">
                         <div class="col-2">
-                            <input type="text" class="form-control" id="kode_barang">
+                            {{-- <input type="text" class="form-control" id="kode_barang" maxlength="10"> --}}
+                            <select class="form-control" id="kode_barang" disabled>
+                                @foreach ($barangs as $barang)
+                                    <option value="{{ $barang->KODE_BARANG }}">{{ $barang->NAMA_BARANG }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-2">
                             <input type="text" class="form-control" id="nama_barang" disabled>
@@ -245,7 +251,7 @@
         document.getElementById('inputTanggal').disabled = false;
         document.getElementById('inputCustomer').disabled = false;
         document.getElementById('inputJenis').disabled = false;
-        // document.getElementById('detailButton').disabled = false;
+        document.getElementById('detailButton').disabled = false;
     });
 
     document.getElementById('btnBatal').addEventListener('click', function() {
@@ -254,7 +260,12 @@
         document.getElementById('inputTanggal').disabled = true;
         document.getElementById('inputCustomer').disabled = true;
         document.getElementById('inputJenis').disabled = true;
-        // document.getElementById('detailButton').disabled = true;
+        document.getElementById('detailButton').disabled = true;
+    })
+
+    document.getElementById('detailButton').addEventListener('click', function() {
+        document.getElementById('kode_barang').disabled = false;
+        document.getElementById('inputBawah').disabled = false;
     })
 </script>
 @endsection

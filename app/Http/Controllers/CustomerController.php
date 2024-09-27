@@ -3,21 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Barang;
+use App\Models\Jenis;
+
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
     public function dashboard()
     {
-        return view('pages.dashboard');
+        $customers = Customer::all();
+        $jenis = Jenis::all();
+        $barangs = Barang::all();
+        return view('pages.dashboard', ['customers' => $customers, 'jenis' => $jenis, 'barangs' => $barangs]);
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function masterBarang()
     {
-        //
+        $barangs = Barang::all();
+        return view('pages.masterBarang', ['barangs' => $barangs]);
+    }
+
+    public function masterCustomer()
+    {
+        $customers = Customer::all();
+        return view('pages.masterCustomer', ['customers' => $customers]);
     }
 
     /**

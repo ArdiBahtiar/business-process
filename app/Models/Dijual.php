@@ -18,4 +18,6 @@ class Dijual extends Model
         'BRUTO',
         'JUMLAH'
     ];
+
+    public $timestamps = false;
 }
