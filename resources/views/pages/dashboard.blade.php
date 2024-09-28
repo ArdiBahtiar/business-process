@@ -14,6 +14,8 @@
             </div> --}}
         </div>
 
+{{-- ini FORM pertama --}}
+
             <div class="container py-3 my-2 rounded" style="background-color: rgb(189, 189, 189)">
                 <div class="row g-1">
                     <div class="col">
@@ -43,7 +45,7 @@
                     <div class="col">
                         <button class="btn btn-light" style="width: 75px">CSV</button>
                     </div>
-                    <div class="col-5">
+                    <div class="col-4">
                         <div class="text-white"></div>
                     </div>
                 </div>
@@ -55,7 +57,7 @@
                         </div>
                         :
                         <div class="col-4">
-                            <input type="text" class="form-control" id="inputNomorFaktur" maxlength="6">
+                            <input type="text" class="form-control" id="noFaktur" maxlength="6">
                         </div>
                         <div class="col-2">
                             <div class="px-3">TANGGAL</div>
@@ -74,7 +76,7 @@
                     :
                     <div class="col-4">
                         <select class="form-control" id="inputCustomer" disabled>
-                            {{-- <option selected></option>     --}}
+                            <option selected></option>    
                             @foreach ($customers as $customer)  
                             <option value="{{$customer->Kode_Customer}}">{{ $customer->Nama_Customer }}</option>    
                             @endforeach
@@ -120,7 +122,7 @@
                     <div class="col">
                         <button class="btn btn-light" style="width: 77px" id="headerBawah" disabled>Header</button>
                     </div>
-                    <div class="col-8">
+                    <div class="col-7">
                         <div class="text-white"></div>
                     </div>
                 </div>
@@ -149,13 +151,19 @@
                     </div>
                 </div>
                 
+{{-- ini FORM kedua --}}
+
                 <form action="" method="">
                 <div class="row">
                         <div class="col-2">
-                            {{-- <input type="text" class="form-control" id="kode_barang" maxlength="10"> --}}
                             <select class="form-control" id="kode_barang" disabled>
+                                <option value=""></option>
                                 @foreach ($barangs as $barang)
-                                    <option value="{{ $barang->KODE_BARANG }}">{{ $barang->NAMA_BARANG }}</option>
+                                    <option value="{{ $barang->KODE_BARANG }}"
+                                        data-nama="{{ $barang->NAMA_BARANG }}"
+                                        data-harga="{{ $barang->HARGA_BARANG }}"> <!-- Assuming HARGA_BARANG exists -->
+                                        {{ $barang->KODE_BARANG }}
+                                    </option>     
                                 @endforeach
                             </select>
                         </div>
@@ -181,8 +189,10 @@
                 </form>
             </div>
 
+{{-- ini FORM ketiga --}}
+
             <div class="container pt-3 pb-5 my-3 rounded" style="background-color: rgb(189, 189, 189)">
-                <div class="row mx-1" style="background-color: white">
+                <div class="row mx-1 mb-1" style="background-color: white">
                     <div class="col">
                         <div class="px-3" style="font-weight: bold">NO FAKTUR</div>
                     </div>
@@ -208,7 +218,41 @@
                         <div class="" style="font-weight: bold">JUMLAH</div>
                     </div>
                 </div>
+
+                <div class="row">
+                    @foreach ($dijuals as $dijual)
+                        <div class="row" style="margin-left: 1px">
+                                <input class="form-check-input" type="checkbox" value="{{ $loop->iteration }}">
+                            <div class="col">
+                                <div class="px-3">{{ $dijual->NO_FAKTUR }}</div>
+                            </div>
+                            <div class="col">
+                                <div class="">{{ $dijual->KODE_BARANG }}</div>
+                            </div>
+                            <div class="col">
+                                <div class="">NAMA BARANG</div>
+                            </div>
+                            <div class="col">
+                                <div class="">{{ $dijual->HARGA }}</div>
+                            </div>
+                            <div class="col">
+                                <div class="">{{ $dijual->QTY }}</div>
+                            </div>
+                            <div class="col">
+                                <div class="px-3">{{ $dijual->DISKON }}</div>
+                            </div>
+                            <div class="col">
+                                <div class="">{{ $dijual->BRUTO }}</div>
+                            </div>
+                            <div class="col">
+                                <div class="">{{ $dijual->JUMLAH }}</div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
+
+{{-- ini FORM total --}}
 
             {{-- <div class="container pt-3 pb-5 my-3 w-50 rounded d-inline-flex" style="background-color: rgb(189, 189, 189)"> --}}
             <div class="row my-3 rounded">
@@ -221,7 +265,8 @@
                             <div class="px-3">TOTAL BRUTO</div>
                         </div>
                         <div class="col">
-                            <div class="border border-primary rounded px-3" style="font-weight: bold; text-align:right">Rp 999,999.99</div>
+                            {{-- <div class="border border-primary rounded px-3" style="font-weight: bold; text-align:right">Rp 999,999.99</div> --}}
+                            <input type="number" class="border border-primary rounded px-3" style="font-weight: bold; text-align:right" id="totalBruto" disabled>
                         </div>
                     </div>
                     <div class="row">
@@ -229,7 +274,8 @@
                             <div class="px-3">TOTAL DISKON</div>
                         </div>
                         <div class="col">
-                            <div class="border border-primary rounded px-3" style="font-weight: bold; text-align:right">Rp 999,999.99</div>
+                            {{-- <div class="border border-primary rounded px-3" style="font-weight: bold; text-align:right">Rp 999,999.99</div> --}}
+                            <input type="number" class="border border-primary rounded px-3" style="font-weight: bold; text-align:right" id="totalDiskon" disabled>
                         </div>
                     </div>
                     <div class="row">
@@ -237,15 +283,18 @@
                             <div class="px-3">TOTAL JUMLAH</div>
                         </div>
                         <div class="col">
-                            <div class="border border-primary rounded px-3" style="font-weight: bold; text-align:right">Rp 999,999.99</div>
+                            {{-- <div class="border border-primary rounded px-3" style="font-weight: bold; text-align:right">Rp 999,999.99</div> --}}
+                            <input type="number" class="border border-primary rounded px-3" style="font-weight: bold; text-align:right" id="totalJumlah" disabled>
                         </div>
                     </div>
                 </div>
             </div>
     </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     document.getElementById('btnInput').addEventListener('click', function() {
+        console.log('Input button clicked');
         document.getElementById('btnSimpan').disabled = false;
         document.getElementById('btnBatal').disabled = false;
         document.getElementById('inputTanggal').disabled = false;
@@ -266,6 +315,86 @@
     document.getElementById('detailButton').addEventListener('click', function() {
         document.getElementById('kode_barang').disabled = false;
         document.getElementById('inputBawah').disabled = false;
+        document.getElementById('simpanBawah').disabled = false;
+        document.getElementById('batalBawah').disabled = false;
     })
+
+    
+    document.getElementById('kode_barang').addEventListener('change', function() {
+        const kodeBarang = this.value;
+        if (kodeBarang) {
+            document.getElementById('inputBawah').disabled = false;
+        }
+
+        // Fetch data from the selected option
+        const selectedOption = this.options[this.selectedIndex];
+        const namaBarang = selectedOption.getAttribute('data-nama');
+        const hargaBarang = selectedOption.getAttribute('data-harga');
+
+        // Update the fields with fetched data
+        document.getElementById('nama_barang').value = namaBarang;
+        document.getElementById('harga_barang').value = hargaBarang;
+    });
+
+    // On clicking the Input button, calculate Bruto and Jumlah
+    document.getElementById('inputBawah').addEventListener('click', function() {
+        const qty = parseFloat(document.getElementById('qty').value) || 0;
+        const diskon = parseFloat(document.getElementById('diskon').value) || 0;
+        const hargaBarang = parseFloat(document.getElementById('harga_barang').value) || 0;
+
+        // Calculate Bruto and Jumlah
+        const bruto = qty * hargaBarang;
+        const jumlah = bruto - (bruto * (diskon / 100));
+
+        // Calculate Total Bruto, Diskon and Jumlah
+
+        // Update the fields
+        document.getElementById('bruto').value = bruto.toFixed(2);
+        document.getElementById('jumlah').value = jumlah.toFixed(2);
+    });
+
+    document.getElementById('simpanBawah').addEventListener('click', function() {
+        const noFaktur = document.getElementById('noFaktur').value;
+        const kodeBarang = document.getElementById('kode_barang').value;
+        const hargaBarang = parseFloat(document.getElementById('harga_barang').value) || 0;
+        const qty = parseInt(document.getElementById('qty').value) || 0;
+        const diskon = parseFloat(document.getElementById('diskon').value) || 0;
+        const bruto = parseFloat(document.getElementById('bruto').value) || 0;
+        const jumlah = parseFloat(document.getElementById('jumlah').value) || 0;
+
+        $.ajax({
+            url: "{{ route('save.dijual') }}",
+            method: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                noFaktur: noFaktur,
+                kode_barang: kodeBarang,
+                harga_barang: hargaBarang,
+                qty: qty,
+                diskon: diskon,
+                bruto: bruto,
+                jumlah: jumlah
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message);
+                    // Clear the form after successful save
+                    document.getElementById('noFaktur').value = '';
+                    document.getElementById('kode_barang').value = '';
+                    document.getElementById('harga_barang').value = '';
+                    document.getElementById('qty').value = '';
+                    document.getElementById('diskon').value = '';
+                    document.getElementById('bruto').value = '';
+                    document.getElementById('jumlah').value = '';
+                } else {
+                    alert('Failed to save data!');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('An error occurred while saving data!');
+            }
+        });
+    });
 </script>
 @endsection

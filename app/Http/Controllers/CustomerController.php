@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Barang;
 use App\Models\Jenis;
+use App\Models\Dijual;
 
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $customers = Customer::all();
         $jenis = Jenis::all();
         $barangs = Barang::all();
-        return view('pages.dashboard', ['customers' => $customers, 'jenis' => $jenis, 'barangs' => $barangs]);
+        // $dijuals = Dijual::all();
+        $dijuals = Dijual::where('NO_FAKTUR', $request->input('noFaktur'));
+        return view('pages.dashboard', ['customers' => $customers, 'jenis' => $jenis, 'barangs' => $barangs, 'dijuals' => $dijuals]);
     }
 
     /**

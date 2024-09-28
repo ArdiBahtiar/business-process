@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [CustomerController::class, 'dashboard']);
 Route::get('/masterBarang', [CustomerController::class, 'masterBarang']);
 Route::get('/masterCustomer', [CustomerController::class, 'masterCustomer']);
+Route::post('/save-dijual', [BarangController::class, 'saveDijual'])->name('save.dijual');
 
 Auth::routes();
 
