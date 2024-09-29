@@ -33,12 +33,15 @@ class BarangController extends Controller
         return response()->json(['success' => true, 'message' => 'Data saved successfully!']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function cariDijual(Request $request)
     {
-        //
+        $noFaktur = $request->input('noFaktur');
+        $dijuals = Dijual::where('NO_FAKTUR', $noFaktur)->get();
+        // dd($dijuals);
+
+        return response()->json([
+            'dijuals' => $dijuals
+        ]);
     }
 
     /**

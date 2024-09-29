@@ -21,8 +21,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [CustomerController::class, 'dashboard']);
 Route::get('/masterBarang', [CustomerController::class, 'masterBarang']);
+Route::get('/createBarang', [CustomerController::class, 'createBarang']);
+Route::post('/barang', [CustomerController::class, 'storeBarang']);
+
 Route::get('/masterCustomer', [CustomerController::class, 'masterCustomer']);
 Route::post('/save-dijual', [BarangController::class, 'saveDijual'])->name('save.dijual');
+Route::post('/cariDijual', [BarangController::class, 'cariDijual'])->name('cari.dijual');
 
 Auth::routes();
 

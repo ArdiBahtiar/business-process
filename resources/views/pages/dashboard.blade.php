@@ -31,7 +31,7 @@
                         <button class="btn btn-light" style="width: 75px" id="btnSimpan" disabled>Simpan</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 75px">Cari</button>
+                        <button class="btn btn-light" style="width: 75px" id="btnCari">Cari</button>
                     </div>
                     <div class="col">
                         <button class="btn btn-light" style="width: 75px" id="btnBatal" disabled>Batal</button>
@@ -45,7 +45,7 @@
                     <div class="col">
                         <button class="btn btn-light" style="width: 75px">CSV</button>
                     </div>
-                    <div class="col-4">
+                    <div class="col-5">
                         <div class="text-white"></div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                         </div>
                         :
                         <div class="col-4">
-                            <input type="text" class="form-control" id="noFaktur" maxlength="6">
+                            <input type="text" class="form-control" id="noFaktur" name="noFaktur" maxlength="6" style="max-width: 70%">
                         </div>
                         <div class="col-2">
                             <div class="px-3">TANGGAL</div>
@@ -87,7 +87,7 @@
                     </div>
                     :
                     <div class="col-3">
-                        <select class="form-control" id="inputJenis" disabled>
+                        <select class="form-control" id="inputJenis" style="max-width: 50%" disabled>
                             @foreach ($jenis as $pilihan)
                                 <option value="{{ $pilihan->KODE_TJEN }}">{{ $pilihan->NAMA_TJEN }}</option>
                             @endforeach
@@ -122,7 +122,7 @@
                     <div class="col">
                         <button class="btn btn-light" style="width: 77px" id="headerBawah" disabled>Header</button>
                     </div>
-                    <div class="col-7">
+                    <div class="col-8">
                         <div class="text-white"></div>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
                                 @foreach ($barangs as $barang)
                                     <option value="{{ $barang->KODE_BARANG }}"
                                         data-nama="{{ $barang->NAMA_BARANG }}"
-                                        data-harga="{{ $barang->HARGA_BARANG }}"> <!-- Assuming HARGA_BARANG exists -->
+                                        data-harga="{{ $barang->HARGA_BARANG }}">
                                         {{ $barang->KODE_BARANG }}
                                     </option>     
                                 @endforeach
@@ -209,7 +209,7 @@
                         <div class="" style="font-weight: bold">QTY</div>
                     </div>
                     <div class="col">
-                        <div class="" style="font-weight: bold">DISKON</div>
+                        <div class="" style="font-weight: bold">DISKON %</div>
                     </div>
                     <div class="col">
                         <div class="" style="font-weight: bold">BRUTO</div>
@@ -219,42 +219,11 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    @foreach ($dijuals as $dijual)
-                        <div class="row" style="margin-left: 1px">
-                                <input class="form-check-input" type="checkbox" value="{{ $loop->iteration }}">
-                            <div class="col">
-                                <div class="px-3">{{ $dijual->NO_FAKTUR }}</div>
-                            </div>
-                            <div class="col">
-                                <div class="">{{ $dijual->KODE_BARANG }}</div>
-                            </div>
-                            <div class="col">
-                                <div class="">NAMA BARANG</div>
-                            </div>
-                            <div class="col">
-                                <div class="">{{ $dijual->HARGA }}</div>
-                            </div>
-                            <div class="col">
-                                <div class="">{{ $dijual->QTY }}</div>
-                            </div>
-                            <div class="col">
-                                <div class="px-3">{{ $dijual->DISKON }}</div>
-                            </div>
-                            <div class="col">
-                                <div class="">{{ $dijual->BRUTO }}</div>
-                            </div>
-                            <div class="col">
-                                <div class="">{{ $dijual->JUMLAH }}</div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
+                <div class="row" id="resultsContainer"></div>
             </div>
 
 {{-- ini FORM total --}}
 
-            {{-- <div class="container pt-3 pb-5 my-3 w-50 rounded d-inline-flex" style="background-color: rgb(189, 189, 189)"> --}}
             <div class="row my-3 rounded">
                 <div class="col-6">
                     <div class=""></div>
@@ -265,7 +234,6 @@
                             <div class="px-3">TOTAL BRUTO</div>
                         </div>
                         <div class="col">
-                            {{-- <div class="border border-primary rounded px-3" style="font-weight: bold; text-align:right">Rp 999,999.99</div> --}}
                             <input type="number" class="border border-primary rounded px-3" style="font-weight: bold; text-align:right" id="totalBruto" disabled>
                         </div>
                     </div>
@@ -274,7 +242,6 @@
                             <div class="px-3">TOTAL DISKON</div>
                         </div>
                         <div class="col">
-                            {{-- <div class="border border-primary rounded px-3" style="font-weight: bold; text-align:right">Rp 999,999.99</div> --}}
                             <input type="number" class="border border-primary rounded px-3" style="font-weight: bold; text-align:right" id="totalDiskon" disabled>
                         </div>
                     </div>
@@ -283,16 +250,15 @@
                             <div class="px-3">TOTAL JUMLAH</div>
                         </div>
                         <div class="col">
-                            {{-- <div class="border border-primary rounded px-3" style="font-weight: bold; text-align:right">Rp 999,999.99</div> --}}
                             <input type="number" class="border border-primary rounded px-3" style="font-weight: bold; text-align:right" id="totalJumlah" disabled>
                         </div>
                     </div>
                 </div>
             </div>
-    </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+// Disabled buttons false and true
     document.getElementById('btnInput').addEventListener('click', function() {
         console.log('Input button clicked');
         document.getElementById('btnSimpan').disabled = false;
@@ -319,7 +285,8 @@
         document.getElementById('batalBawah').disabled = false;
     })
 
-    
+
+// Autofill datas for Dijual table
     document.getElementById('kode_barang').addEventListener('change', function() {
         const kodeBarang = this.value;
         if (kodeBarang) {
@@ -353,6 +320,8 @@
         document.getElementById('jumlah').value = jumlah.toFixed(2);
     });
 
+
+// Save datas into Dijual table
     document.getElementById('simpanBawah').addEventListener('click', function() {
         const noFaktur = document.getElementById('noFaktur').value;
         const kodeBarang = document.getElementById('kode_barang').value;
@@ -379,7 +348,7 @@
                 if (response.success) {
                     alert(response.message);
                     // Clear the form after successful save
-                    document.getElementById('noFaktur').value = '';
+                    // document.getElementById('noFaktur').value = '';
                     document.getElementById('kode_barang').value = '';
                     document.getElementById('harga_barang').value = '';
                     document.getElementById('qty').value = '';
@@ -395,6 +364,140 @@
                 alert('An error occurred while saving data!');
             }
         });
+
+        $.ajax({
+                url: "{{ route('cari.dijual') }}",
+                method: "POST",
+                data: {
+                    noFaktur: noFaktur,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    $('#resultsContainer').empty();
+
+                    if (response.dijuals && response.dijuals.length > 0) {
+                        $.each(response.dijuals, function (index, dijual) {
+                            $('#resultsContainer').append(`
+                                <div class="row align-items-center" style="margin-left: 0.5px">
+                                    <input class="form-check-input item-checkbox" type="checkbox" value="${index + 1}">
+                                    <div class="col">
+                                        <div class="px-3">${dijual.NO_FAKTUR}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div>${dijual.KODE_BARANG}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div>NAMA BARANG</div>
+                                    </div>
+                                    <div class="col">
+                                        <div>${dijual.HARGA}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div>${dijual.QTY}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="diskon-value">${parseFloat(dijual.DISKON)}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bruto-value">${parseFloat(dijual.BRUTO)}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="jumlah-value">${parseFloat(dijual.JUMLAH)}</div>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                        calculateTotals();
+                    } else {
+                        $('#resultsContainer').append('<div>No data found</div>');
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert('Error fetching data. Please try again.');
+                }
+            });
     });
+
+
+// Auto Query for btnCari
+    $(document).ready(function () {
+        $('#btnCari').on('click', function () {
+            let noFaktur = $('#noFaktur').val();
+
+            $.ajax({
+                url: "{{ route('cari.dijual') }}",
+                method: "POST",
+                data: {
+                    noFaktur: noFaktur,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    $('#resultsContainer').empty();
+
+                    if (response.dijuals && response.dijuals.length > 0) {
+                        $.each(response.dijuals, function (index, dijual) {
+                            $('#resultsContainer').append(`
+                                <div class="row align-items-center" style="margin-left: 0.5px">
+                                    <div class="col">
+                                        <div class="px-3">${dijual.NO_FAKTUR}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div>${dijual.KODE_BARANG}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div>NAMA BARANG</div>
+                                    </div>
+                                    <div class="col">
+                                        <div>${dijual.HARGA}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div>${dijual.QTY}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="diskon-value">${parseFloat(dijual.DISKON)}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bruto-value">${parseFloat(dijual.BRUTO)}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="jumlah-value">${parseFloat(dijual.JUMLAH)}</div>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                        calculateTotals();
+                    } else {
+                        $('#resultsContainer').append('<div>No data found</div>');
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert('Error fetching data. Please try again.');
+                }
+            });
+        });
+    });
+
+    function calculateTotals()
+    {
+        let totalBruto = 0;
+        let totalDiskon = 0;
+        let totalJumlah = 0;
+
+        $('#resultsContainer .row').each(function () {
+            let bruto = parseFloat($(this).find('.bruto-value').text()) || 0;
+            let diskon = parseFloat($(this).find('.diskon-value').text()) || 0;
+            let jumlah = parseFloat($(this).find('.jumlah-value').text()) || 0;
+
+            totalBruto += bruto;
+            totalDiskon += diskon;
+            totalJumlah += jumlah;
+        });
+
+        $('#totalBruto').val(totalBruto.toFixed(2));
+        $('#totalDiskon').val(totalDiskon.toFixed(2));
+        $('#totalJumlah').val(totalJumlah.toFixed(2));
+    }
 </script>
 @endsection

@@ -16,71 +16,41 @@ class CustomerController extends Controller
         $customers = Customer::all();
         $jenis = Jenis::all();
         $barangs = Barang::all();
-        // $dijuals = Dijual::all();
-        $dijuals = Dijual::where('NO_FAKTUR', $request->input('noFaktur'));
+        $dijuals = Dijual::all();
+        // $dijuals = Dijual::where('NO_FAKTUR', $request->input('noFaktur'));
         return view('pages.dashboard', ['customers' => $customers, 'jenis' => $jenis, 'barangs' => $barangs, 'dijuals' => $dijuals]);
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+// MASTER BARANG
     public function masterBarang()
     {
         $barangs = Barang::all();
         return view('pages.masterBarang', ['barangs' => $barangs]);
     }
 
+    public function createBarang()
+    {
+        $barangs = Barang::all();
+        return view('pages.createBarang', ['barangs' => $barangs]);
+    }
+
+    public function storeBarang(Request $request)
+    {
+        Barang::create($request->all());
+        return redirect('/masterBarang');
+    }
+
+
+// MASTER CUSTOMER
     public function masterCustomer()
     {
         $customers = Customer::all();
         return view('pages.masterCustomer', ['customers' => $customers]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function createCustomer()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Customer $customer)
-    {
-        //
-    }
 }
