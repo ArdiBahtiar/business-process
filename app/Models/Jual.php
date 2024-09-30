@@ -10,7 +10,6 @@ class Jual extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
         'NO_FAKTUR',
         'Kode_Customer',
         'KODE_TJEN',

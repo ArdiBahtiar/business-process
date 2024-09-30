@@ -283,6 +283,7 @@
         document.getElementById('inputBawah').disabled = false;
         document.getElementById('simpanBawah').disabled = false;
         document.getElementById('batalBawah').disabled = false;
+        document.getElementById('hapusBawah').disabled = false;
         document.getElementById('btnInput').disabled = true;
         document.getElementById('btnHapus').disabled = true;
         document.getElementById('btnEdit').disabled = true;
@@ -393,8 +394,8 @@
                     if (response.dijuals && response.dijuals.length > 0) {
                         $.each(response.dijuals, function (index, dijual) {
                             $('#resultsContainer').append(`
-                                <div class="row align-items-center" style="margin-left: 0.5px">
-                                    <input class="form-check-input item-checkbox" type="checkbox" value="${index + 1}">
+                                <div class="row align-items-center" data-no-faktur="${dijual.NO_FAKTUR}" data-kode-barang="${dijual.KODE_BARANG}" data-harga="${dijual.HARGA}" data-qty="${dijual.QTY}" data-diskon="${dijual.DISKON}" data-bruto="${dijual.BRUTO}" data-jumlah="${dijual.JUMLAH}" style="margin-left: 0.5px" data-id="${index + 1}">
+                                    <input class="form-check-input item-checkbox" type="checkbox">
                                     <div class="col">
                                         <div class="px-3">${dijual.NO_FAKTUR}</div>
                                     </div>
@@ -402,7 +403,7 @@
                                         <div>${dijual.KODE_BARANG}</div>
                                     </div>
                                     <div class="col">
-                                        <div>NAMA BARANG</div>
+                                        <div>${dijual.NAMA_BARANG}</div>
                                     </div>
                                     <div class="col">
                                         <div>${dijual.HARGA}</div>
@@ -497,22 +498,123 @@
     function calculateTotals()
     {
         let totalBruto = 0;
-        let totalDiskon = 0;
         let totalJumlah = 0;
 
         $('#resultsContainer .row').each(function () {
             let bruto = parseFloat($(this).find('.bruto-value').text()) || 0;
-            let diskon = parseFloat($(this).find('.diskon-value').text()) || 0;
             let jumlah = parseFloat($(this).find('.jumlah-value').text()) || 0;
 
             totalBruto += bruto;
-            totalDiskon += diskon;
             totalJumlah += jumlah;
         });
+
+        let totalDiskon = totalBruto - totalJumlah;
 
         $('#totalBruto').val(totalBruto.toFixed(2));
         $('#totalDiskon').val(totalDiskon.toFixed(2));
         $('#totalJumlah').val(totalJumlah.toFixed(2));
     }
+
+
+// Save datas into Jual table 
+    document.getElementById('btnSimpan').addEventListener('click', function() {
+        const noFaktur = document.getElementById('noFaktur').value;
+        const kodeCustomer = document.getElementById('inputCustomer').value;
+        const kodeTJen = document.getElementById('inputJenis').value;
+        const tanggal = document.getElementById('inputTanggal').value;
+        const totalBruto = parseFloat(document.getElementById('totalBruto').value) || 0;
+        const totalDiskon = parseFloat(document.getElementById('totalDiskon').value) || 0;
+        const totalJumlah = parseFloat(document.getElementById('totalJumlah').value) || 0;
+
+        $.ajax({
+            url: "{{ route('save.jual') }}",
+            method: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                noFaktur: noFaktur,
+                inputCustomer: kodeCustomer,
+                inputJenis: kodeTJen,
+                inputTanggal: tanggal,
+                totalBruto: totalBruto,
+                totalDiskon: totalDiskon,
+                totalJumlah: totalJumlah
+            },
+            success: function(response) 
+            {
+                if (response.success) 
+                {
+                    alert(response.message);
+                    document.getElementById('noFaktur').value = '';
+                    document.getElementById('inputCustomer').value = '';
+                    document.getElementById('inputJenis').value = '';
+                    document.getElementById('inputTanggal').value = '';
+                    document.getElementById('totalBruto').value = '';
+                    document.getElementById('totalDiskon').value = '';
+                    document.getElementById('totalJumlah').value = '';
+                }
+                else
+                {
+                    alert('Failed to save data!');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('An error has occurred while saving data!');
+            }
+        });
+    });
+
+
+// Delete record from checkbox
+    $(document).on('click', '#hapusBawah', function () {
+    let itemsToDelete = [];
+
+    $('.item-checkbox:checked').each(function () {
+        let row = $(this).closest('.item-row');
+
+        let noFaktur = row.data('no-faktur');
+        let kodeBarang = row.data('kode-barang');
+        let harga = row.data('harga');
+        let qty = row.data('qty');
+        let diskon = row.data('diskon');
+        let bruto = row.data('bruto');
+        let jumlah = row.data('jumlah');
+
+        itemsToDelete.push({
+            noFaktur: noFaktur,
+            kodeBarang: kodeBarang,
+            harga: harga,
+            qty: qty,
+            diskon: diskon,
+            bruto: bruto,
+            jumlah: jumlah
+        });
+        row.remove();
+    });
+
+    if (itemsToDelete.length > 0) {
+        $.ajax({
+            url: "{{ route('delete.dijual') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                items: itemsToDelete
+            },
+            success: function (response) {
+                if (response.success) {
+                    alert('Records deleted successfully!');
+                } else {
+                    alert('Failed to delete records.');
+                }
+            },
+            error: function (error) {
+                console.error(error);
+                alert('An error occurred while deleting records.');
+            }
+        });
+    } else {
+        alert('No items selected.');
+    }
+});
 </script>
 @endsection

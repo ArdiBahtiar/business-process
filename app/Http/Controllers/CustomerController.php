@@ -8,6 +8,7 @@ use App\Models\Jenis;
 use App\Models\Dijual;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -93,4 +94,35 @@ class CustomerController extends Controller
         $Customer->delete();
         return redirect('/masterCustomer');
     }
+
+
+    public function deleteDijual(Request $request)
+{
+    // Validate the incoming request
+    $validated = $request->validate([
+        'items' => 'required|array',  // Expect an array of items
+        'items.*.noFaktur' => 'required|string',
+        'items.*.kodeBarang' => 'required|string',
+        'items.*.harga' => 'required|numeric',
+        'items.*.qty' => 'required|numeric',
+        'items.*.diskon' => 'required|numeric',
+        'items.*.bruto' => 'required|numeric',
+        'items.*.jumlah' => 'required|numeric'
+    ]);
+
+    // Loop through the items and delete matching records
+    foreach ($validated['items'] as $item) {
+        DB::table('Dijuals')
+            ->where('NO_FAKTUR', $item['noFaktur'])
+            ->where('KODE_BARANG', $item['kodeBarang'])
+            ->where('HARGA', $item['harga'])
+            ->where('QTY', $item['qty'])
+            ->where('DISKON', $item['diskon'])
+            ->where('BRUTO', $item['bruto'])
+            ->where('JUMLAH', $item['jumlah'])
+            ->delete();
+    }
+
+    return response()->json(['success' => true, 'message' => 'Records deleted successfully']);
+}
 }

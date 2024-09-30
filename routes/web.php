@@ -37,6 +37,10 @@ Route::get('/deleteCustomer/{customer}', [CustomerController::class, 'deleteCust
 Route::post('/save-dijual', [BarangController::class, 'saveDijual'])->name('save.dijual');
 Route::post('/cariDijual', [BarangController::class, 'cariDijual'])->name('cari.dijual');
 
+Route::post('/saveJual', [BarangController::class, 'saveJual'])->name('save.jual');
+
+Route::post('/deleteDijual', [CustomerController::class, 'deleteDijual'])->name('delete.dijual');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

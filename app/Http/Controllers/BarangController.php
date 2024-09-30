@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\Dijual;
+use App\Models\Jual;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BarangController extends Controller
 {
@@ -36,20 +38,41 @@ class BarangController extends Controller
     public function cariDijual(Request $request)
     {
         $noFaktur = $request->input('noFaktur');
-        $dijuals = Dijual::where('NO_FAKTUR', $noFaktur)->get();
-        // dd($dijuals);
+        // $dijuals = Dijual::where('NO_FAKTUR', $noFaktur)->get();
+        $dijuals = DB::table('dijuals')
+            ->join('barangs', 'dijuals.KODE_BARANG', '=', 'barangs.KODE_BARANG')
+            ->where('dijuals.NO_FAKTUR', $noFaktur)
+            ->select('dijuals.*', 'barangs.NAMA_BARANG')
+            ->get();
 
         return response()->json([
             'dijuals' => $dijuals
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function saveJual(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'noFaktur' => 'required|string|max:6',
+            'inputCustomer' => 'required|string|max:4',
+            'inputJenis' => 'required|string|max:1',
+            'inputTanggal' => 'required|date',
+            'totalBruto' => 'required|numeric',
+            'totalDiskon' => 'required|numeric',
+            'totalJumlah' => 'required|numeric'
+        ]);
+
+        $jual = new Jual();
+        $jual->NO_FAKTUR = $validated['noFaktur'];
+        $jual->Kode_Customer = $validated['inputCustomer'];
+        $jual->KODE_TJEN = $validated['inputJenis'];
+        $jual->TGL_FAKTUR = $validated['inputTanggal'];
+        $jual->TOTAL_BRUTO = $validated['totalBruto'];
+        $jual->TOTAL_DISKON = $validated['totalDiskon'];
+        $jual->TOTAL_JUMLAH = $validated['totalJumlah'];
+        $jual->save();
+
+        return response()->json(['success' => true, 'message' => 'Data saved successfully!']);
     }
 
     /**
