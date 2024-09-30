@@ -16,4 +16,6 @@ class Barang extends Model
     ];
 
     public $timestamps = false;
+    public $incrementing = false;
+    protected $primaryKey = 'KODE_BARANG';
 }

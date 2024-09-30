@@ -15,4 +15,6 @@ class Customer extends Model
     ];
 
     public $timestamps = false;
+    public $primaryKey = 'Kode_Customer';
+    public $incrementing = false;
 }

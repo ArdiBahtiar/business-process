@@ -22,10 +22,10 @@
                         <button class="btn btn-light" style="width: 75px" id="btnInput">Input</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 75px">Hapus</button>
+                        <button class="btn btn-light" style="width: 75px" id="btnHapus">Hapus</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 75px">Edit</button>
+                        <button class="btn btn-light" style="width: 75px" id="btnEdit">Edit</button>
                     </div>
                     <div class="col">
                         <button class="btn btn-light" style="width: 75px" id="btnSimpan" disabled>Simpan</button>
@@ -37,15 +37,15 @@
                         <button class="btn btn-light" style="width: 75px" id="btnBatal" disabled>Batal</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 75px">Print</button>
+                        <button class="btn btn-light" style="width: 75px" id="btnPrint">Print</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 75px">Preview</button>
+                        <button class="btn btn-light" style="width: 75px" id="btnPreview">Preview</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-light" style="width: 75px">CSV</button>
+                        <button class="btn btn-light" style="width: 75px" id="btnCSV">CSV</button>
                     </div>
-                    <div class="col-5">
+                    <div class="col-4">
                         <div class="text-white"></div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                     <div class="col">
                         <button class="btn btn-light" style="width: 77px" id="headerBawah" disabled>Header</button>
                     </div>
-                    <div class="col-8">
+                    <div class="col-7">
                         <div class="text-white"></div>
                     </div>
                 </div>
@@ -283,7 +283,22 @@
         document.getElementById('inputBawah').disabled = false;
         document.getElementById('simpanBawah').disabled = false;
         document.getElementById('batalBawah').disabled = false;
+        document.getElementById('btnInput').disabled = true;
+        document.getElementById('btnHapus').disabled = true;
+        document.getElementById('btnEdit').disabled = true;
+        // document.getElementById('btnSimpan').disabled = true;
+        document.getElementById('btnCari').disabled = true;
+        document.getElementById('btnBatal').disabled = true;
+        // document.getElementById('btnPrint').disabled = true;
+        // document.getElementById('btnPreview').disabled = true;
+        // document.getElementById('btnCSV').disabled = true;
     })
+
+
+// Print Page
+    document.getElementById('btnPrint').addEventListener('click', function () {
+        window.print();
+    });
 
 
 // Autofill datas for Dijual table

@@ -21,6 +21,7 @@ class CustomerController extends Controller
         return view('pages.dashboard', ['customers' => $customers, 'jenis' => $jenis, 'barangs' => $barangs, 'dijuals' => $dijuals]);
     }
 
+    
 // MASTER BARANG
     public function masterBarang()
     {
@@ -40,6 +41,22 @@ class CustomerController extends Controller
         return redirect('/masterBarang');
     }
 
+    public function editBarang(Barang $barang)
+    {
+        return view('pages.editBarang', compact('barang'));
+    }
+
+    public function updateBarang(Request $request, Barang $barang)
+    {
+        $barang->update($request->all());
+        return redirect('/masterBarang');
+    }
+
+    public function deleteBarang(Barang $barang)
+    {
+        $barang->delete();
+        return redirect('/masterBarang');
+    }
 
 // MASTER CUSTOMER
     public function masterCustomer()
@@ -50,7 +67,30 @@ class CustomerController extends Controller
 
     public function createCustomer()
     {
-        //
+        $customers = Customer::all();
+        return view('pages.createCustomer', ['customers' => $customers]);
     }
 
+    public function storeCustomer(Request $request)
+    {
+        Customer::create($request->all());
+        return redirect('/masterCustomer');
+    }
+
+    public function editCustomer(Customer $customer)
+    {
+        return view('pages.editCustomer', compact('customer'));
+    }
+
+    public function updateCustomer(Request $request, Customer $Customer)
+    {
+        $Customer->update($request->all());
+        return redirect('/masterCustomer');
+    }
+
+    public function deleteCustomer(Customer $Customer)
+    {
+        $Customer->delete();
+        return redirect('/masterCustomer');
+    }
 }

@@ -23,8 +23,17 @@ Route::get('/', [CustomerController::class, 'dashboard']);
 Route::get('/masterBarang', [CustomerController::class, 'masterBarang']);
 Route::get('/createBarang', [CustomerController::class, 'createBarang']);
 Route::post('/barang', [CustomerController::class, 'storeBarang']);
+Route::get('/editBarang/{barang}', [CustomerController::class, 'editBarang']);
+Route::put('/editBarang/{barang}/submit', [CustomerController::class, 'updateBarang']);
+Route::get('/deleteBarang/{barang}', [CustomerController::class, 'deleteBarang']);
 
 Route::get('/masterCustomer', [CustomerController::class, 'masterCustomer']);
+Route::get('/createCustomer', [CustomerController::class, 'createCustomer']);
+Route::post('/customer', [CustomerController::class, 'storeCustomer']);
+Route::get('/editCustomer/{customer}', [CustomerController::class, 'editCustomer']);
+Route::put('/editCustomer/{customer}/submit', [CustomerController::class, 'updateCustomer']);
+Route::get('/deleteCustomer/{customer}', [CustomerController::class, 'deleteCustomer']);
+
 Route::post('/save-dijual', [BarangController::class, 'saveDijual'])->name('save.dijual');
 Route::post('/cariDijual', [BarangController::class, 'cariDijual'])->name('cari.dijual');
 
