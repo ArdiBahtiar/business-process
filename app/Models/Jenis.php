@@ -15,4 +15,6 @@ class Jenis extends Model
     ];
 
     public $timestamps = false;
+    public $incrementing = false;
+    public $primaryKey = 'KODE_TJEN';
 }

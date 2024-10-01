@@ -38,6 +38,30 @@ class BarangController extends Controller
     public function cariDijual(Request $request)
     {
         $noFaktur = $request->input('noFaktur');
+    
+        // Fetch the Jual record
+        $jual = Jual::where('NO_FAKTUR', $noFaktur)->first();
+    
+        // Fetch the Dijual records associated with the Jual
+        $dijuals = DB::table('dijuals')
+        ->join('barangs', 'dijuals.KODE_BARANG', '=', 'barangs.KODE_BARANG')
+        ->where('dijuals.NO_FAKTUR', $noFaktur)
+        ->select('dijuals.*', 'barangs.NAMA_BARANG') // Fetch all dijuals fields + NAMA_BARANG
+        ->get();
+
+        if ($jual) {
+            return response()->json([
+                'jual' => $jual,
+                'dijuals' => $dijuals
+            ]);
+        } else {
+            return response()->json(['message' => 'Record not found'], 404);
+        }
+    }
+
+    public function autofill(Request $request)
+    {
+        $noFaktur = $request->input('noFaktur');
         // $dijuals = Dijual::where('NO_FAKTUR', $noFaktur)->get();
         $dijuals = DB::table('dijuals')
             ->join('barangs', 'dijuals.KODE_BARANG', '=', 'barangs.KODE_BARANG')
@@ -75,35 +99,16 @@ class BarangController extends Controller
         return response()->json(['success' => true, 'message' => 'Data saved successfully!']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Barang $barang)
+    public function destroy(Request $request)
     {
-        //
-    }
+        $noFaktur = $request->input('noFaktur');  // Get the noFaktur from the request
+        $dijual = Jual::where('NO_FAKTUR', $noFaktur)->first(); // Find the record
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Barang $barang)
-    {
-        //
-    }
+        if ($dijual) {
+            $dijual->delete();  // Delete the record
+            return response()->json(['success' => true]);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Barang $barang)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Barang $barang)
-    {
-        //
+        return response()->json(['success' => false, 'message' => 'Record not found']);
     }
 }

@@ -287,12 +287,8 @@
         document.getElementById('btnInput').disabled = true;
         document.getElementById('btnHapus').disabled = true;
         document.getElementById('btnEdit').disabled = true;
-        // document.getElementById('btnSimpan').disabled = true;
         document.getElementById('btnCari').disabled = true;
         document.getElementById('btnBatal').disabled = true;
-        // document.getElementById('btnPrint').disabled = true;
-        // document.getElementById('btnPreview').disabled = true;
-        // document.getElementById('btnCSV').disabled = true;
     })
 
 
@@ -382,7 +378,7 @@
         });
 
         $.ajax({
-                url: "{{ route('cari.dijual') }}",
+                url: "{{ route('cari.autofill') }}",
                 method: "POST",
                 data: {
                     noFaktur: noFaktur,
@@ -437,63 +433,75 @@
 
 
 // Auto Query for btnCari
-    $(document).ready(function () {
-        $('#btnCari').on('click', function () {
-            let noFaktur = $('#noFaktur').val();
+$(document).ready(function () {
+    $('#btnCari, #btnPreview').on('click', function () {
+        let noFaktur = $('#noFaktur').val();
+        
+        $.ajax({
+            url: "{{ route('cari.dijual') }}",
+            method: "POST",
+            data: {
+                noFaktur: noFaktur,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function (response) {
+                $('#resultsContainer').empty();
 
-            $.ajax({
-                url: "{{ route('cari.dijual') }}",
-                method: "POST",
-                data: {
-                    noFaktur: noFaktur,
-                    _token: "{{ csrf_token() }}"
-                },
-                success: function (response) {
-                    $('#resultsContainer').empty();
-
-                    if (response.dijuals && response.dijuals.length > 0) {
-                        $.each(response.dijuals, function (index, dijual) {
-                            $('#resultsContainer').append(`
-                                <div class="row align-items-center" style="margin-left: 0.5px">
-                                    <div class="col">
-                                        <div class="px-3">${dijual.NO_FAKTUR}</div>
-                                    </div>
-                                    <div class="col">
-                                        <div>${dijual.KODE_BARANG}</div>
-                                    </div>
-                                    <div class="col">
-                                        <div>NAMA BARANG</div>
-                                    </div>
-                                    <div class="col">
-                                        <div>${dijual.HARGA}</div>
-                                    </div>
-                                    <div class="col">
-                                        <div>${dijual.QTY}</div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="diskon-value">${parseFloat(dijual.DISKON)}</div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="bruto-value">${parseFloat(dijual.BRUTO)}</div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="jumlah-value">${parseFloat(dijual.JUMLAH)}</div>
-                                    </div>
-                                </div>
-                            `);
-                        });
-                        calculateTotals();
-                    } else {
-                        $('#resultsContainer').append('<div>No data found</div>');
-                    }
-                },
-                error: function (error) {
-                    console.log(error);
-                    alert('Error fetching data. Please try again.');
+                // Autofill the Jual data (Kode_Customer, TANGGAL, KODE_TJEN, totalBruto, totalDiskon, totalJumlah)
+                if (response.jual) {
+                    $('#inputCustomer').val(response.jual.Kode_Customer);   // Autofill Kode_Customer
+                    $('#inputTanggal').val(response.jual.TGL_FAKTUR);            // Autofill TANGGAL
+                    $('#inputJenis').val(response.jual.KODE_TJEN);           // Autofill KODE_TJEN
+                    $('#totalBruto').val(response.jual.TOTAL_BRUTO);         // Autofill totalBruto
+                    $('#totalDiskon').val(response.jual.TOTAL_DISKON);       // Autofill totalDiskon
+                    $('#totalJumlah').val(response.jual.TOTAL_JUMLAH);       // Autofill totalJumlah
                 }
-            });
+
+                // Fill Dijual data in the resultsContainer as before
+                if (response.dijuals && response.dijuals.length > 0) {
+                    $.each(response.dijuals, function (index, dijual) {
+                        $('#resultsContainer').append(`
+                            <div class="row align-items-center" style="margin-left: 0.5px">
+                                <input class="form-check-input item-checkbox" type="checkbox">
+                                <div class="col">
+                                    <div class="px-3">${dijual.NO_FAKTUR}</div>
+                                </div>
+                                <div class="col">
+                                    <div>${dijual.KODE_BARANG}</div>
+                                </div>
+                                <div class="col">
+                                    <div>${dijual.NAMA_BARANG}</div>
+                                </div>
+                                <div class="col">
+                                    <div>${dijual.HARGA}</div>
+                                </div>
+                                <div class="col">
+                                    <div>${dijual.QTY}</div>
+                                </div>
+                                <div class="col">
+                                    <div class="diskon-value">${parseFloat(dijual.DISKON)}</div>
+                                </div>
+                                <div class="col">
+                                    <div class="bruto-value">${parseFloat(dijual.BRUTO)}</div>
+                                </div>
+                                <div class="col">
+                                    <div class="jumlah-value">${parseFloat(dijual.JUMLAH)}</div>
+                                </div>
+                            </div>
+                        `);
+                    });
+                    calculateTotals();
+                } else {
+                    $('#resultsContainer').append('<div>No data found</div>');
+                }
+            },
+            error: function (error) {
+                console.log(error);
+                alert('Error fetching data. Please try again.');
+            }
         });
     });
+});
 
     function calculateTotals()
     {
@@ -516,6 +524,117 @@
     }
 
 
+// btnEdit kayak btnCari
+$(document).ready(function () {
+    $('#btnEdit').on('click', function () {
+        document.getElementById('inputCustomer').disabled = false;
+        document.getElementById('inputTanggal').disabled = false;
+        document.getElementById('inputJenis').disabled = false;
+        document.getElementById('detailButton').disabled = false;
+        let noFaktur = $('#noFaktur').val();
+        
+        $.ajax({
+            url: "{{ route('cari.dijual') }}",
+            method: "POST",
+            data: {
+                noFaktur: noFaktur,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function (response) {
+                $('#resultsContainer').empty();
+
+                // Autofill the Jual data (Kode_Customer, TANGGAL, KODE_TJEN, totalBruto, totalDiskon, totalJumlah)
+                if (response.jual) {
+                    $('#inputCustomer').val(response.jual.Kode_Customer);   // Autofill Kode_Customer
+                    $('#inputTanggal').val(response.jual.TGL_FAKTUR);            // Autofill TANGGAL
+                    $('#inputJenis').val(response.jual.KODE_TJEN);           // Autofill KODE_TJEN
+                    $('#totalBruto').val(response.jual.TOTAL_BRUTO);         // Autofill totalBruto
+                    $('#totalDiskon').val(response.jual.TOTAL_DISKON);       // Autofill totalDiskon
+                    $('#totalJumlah').val(response.jual.TOTAL_JUMLAH);       // Autofill totalJumlah
+                }
+
+                // Fill Dijual data in the resultsContainer as before
+                if (response.dijuals && response.dijuals.length > 0) {
+                    $.each(response.dijuals, function (index, dijual) {
+                        $('#resultsContainer').append(`
+                            <div class="row align-items-center" style="margin-left: 0.5px">
+                                <input class="form-check-input item-checkbox" type="checkbox">
+                                <div class="col">
+                                    <div class="px-3">${dijual.NO_FAKTUR}</div>
+                                </div>
+                                <div class="col">
+                                    <div>${dijual.KODE_BARANG}</div>
+                                </div>
+                                <div class="col">
+                                    <div>NAMA BARANG</div>
+                                </div>
+                                <div class="col">
+                                    <div>${dijual.HARGA}</div>
+                                </div>
+                                <div class="col">
+                                    <div>${dijual.QTY}</div>
+                                </div>
+                                <div class="col">
+                                    <div class="diskon-value">${parseFloat(dijual.DISKON)}</div>
+                                </div>
+                                <div class="col">
+                                    <div class="bruto-value">${parseFloat(dijual.BRUTO)}</div>
+                                </div>
+                                <div class="col">
+                                    <div class="jumlah-value">${parseFloat(dijual.JUMLAH)}</div>
+                                </div>
+                            </div>
+                        `);
+                    });
+                    calculateTotals();
+                } else {
+                    $('#resultsContainer').append('<div>No data found</div>');
+                }
+            },
+            error: function (error) {
+                console.log(error);
+                alert('Error fetching data. Please try again.');
+            }
+        });
+    });
+});    
+
+
+// Delete data from Jual
+    $(document).ready(function () {
+    $('#btnHapus').on('click', function () {
+        let noFaktur = $('#noFaktur').val();
+
+        if (noFaktur) {
+            if (confirm('Are you sure you want to delete this record?')) {
+                $.ajax({
+                    url: "{{ route('delete.jual') }}", // Update to the correct delete route
+                    method: "POST",
+                    data: {
+                        noFaktur: noFaktur,
+                        _token: "{{ csrf_token() }}" // Include CSRF token for security
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Record deleted successfully!');
+                            $('#resultsContainer').empty(); // Optionally clear the UI or update it
+                        } else {
+                            alert(response.message || 'Error deleting the record.');
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert('Error deleting the record. Please try again.');
+                    }
+                });
+            }
+        } else {
+            alert('Please enter a valid No Faktur.');
+        }
+    });
+    });
+
+    
 // Save datas into Jual table 
     document.getElementById('btnSimpan').addEventListener('click', function() {
         const noFaktur = document.getElementById('noFaktur').value;
@@ -615,6 +734,73 @@
     } else {
         alert('No items selected.');
     }
+});
+
+
+// btnBatal reload
+    $(document).ready(function () {
+        $('#btnBatal').on('click', function () {
+            location.reload();
+        });
+    });
+
+
+// batalBawah refresh 2nd form
+    $(document).ready(function () {
+        $('#batalBawah').on('click', function () {
+            document.getElementById('kode_barang').value = '';
+            document.getElementById('nama_barang').value = '';
+            document.getElementById('harga_barang').value = '';
+            document.getElementById('qty').value = '';
+            document.getElementById('diskon').value = '';
+            document.getElementById('bruto').value = '';
+            document.getElementById('jumlah').value = '';
+        });
+    });
+
+
+// btnCSV export
+$(document).ready(function () {
+    $('#btnCSV').on('click', function () {
+        let csvContent = "data:text/csv;charset=utf-8,";
+
+        // Header row
+        csvContent += "NO FAKTUR,KODE BARANG,NAMA BARANG,HARGA,QTY,DISKON %,BRUTO,JUMLAH\n";
+
+        // Iterate through each row and extract data
+        $('#resultsContainer .row').each(function () {
+            let noFaktur = $(this).find('.col:eq(0) .px-3').text().trim();
+            let kodeBarang = $(this).find('.col:eq(1)').text().trim();
+            let namaBarang = $(this).find('.col:eq(2)').text().trim();
+            let harga = $(this).find('.col:eq(3)').text().trim();
+            let qty = $(this).find('.col:eq(4)').text().trim();
+            let diskon = $(this).find('.col:eq(5)').text().trim();
+            let bruto = $(this).find('.col:eq(6)').text().trim();
+            let jumlah = $(this).find('.col:eq(7)').text().trim();
+
+            // Append each row of data
+            csvContent += `${noFaktur},${kodeBarang},${namaBarang},${harga},${qty},${diskon},${bruto},${jumlah}\n`;
+        });
+
+        // Add the totals row (ensure correct column alignment by including blank fields)
+        let totalBruto = $('#totalBruto').val();
+        let totalDiskon = $('#totalDiskon').val();
+        let totalJumlah = $('#totalJumlah').val();
+        csvContent += `,,TOTAL,,,,${totalBruto},${totalJumlah},${totalDiskon}\n`;
+
+        // Encode the CSV content
+        let encodedUri = encodeURI(csvContent);
+        let link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "data.csv");
+
+        // Append link to the body and click it
+        document.body.appendChild(link);
+        link.click();
+
+        // Remove link from the DOM
+        document.body.removeChild(link);
+    });
 });
 </script>
 @endsection

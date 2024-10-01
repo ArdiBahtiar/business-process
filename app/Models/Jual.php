@@ -20,4 +20,6 @@ class Jual extends Model
     ];
 
     public $timestamps = false;
+    public $primaryKey = 'NO_FAKTUR';
+    public $incrementing = false;
 }
